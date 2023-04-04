@@ -18,6 +18,9 @@ RUN apt-get update
 # Install redis-server
 RUN apt-get install -y redis-tools redis-server
 
+RUN apt-get update
+RUN apt-get upgrade -y
+
 {% if docker_database_debs.strip() -%}
 # Copy locally-built Debian package dependencies
 {{ copy_files("debs/", docker_database_debs.split(' '), "/debs/") }}
