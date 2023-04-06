@@ -10,16 +10,13 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
 
 # Add redis's repo
-RUN apt-get install -y gnupg
-RUN curl -fsSL https://packages.redis.io/gpg | gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
-RUN echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb bullseye main" | tee /etc/apt/sources.list.d/redis.list
+RUN apt-get install -y gnupg 
+RUN curl -fsSL https://packages.redis.io/gpg | apt-key add -
+RUN echo "deb https://packages.redis.io/deb bullseye main" | tee /etc/apt/sources.list.d/redis.list
 RUN apt-get update
 
 # Install redis-server
 RUN apt-get install -y redis-tools redis-server
-
-RUN apt-get update
-RUN apt-get upgrade -y
 
 {% if docker_database_debs.strip() -%}
 # Copy locally-built Debian package dependencies
